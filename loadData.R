@@ -41,5 +41,14 @@ epa_on_off <- function(player_name) {
     )
 }
 
-epa_on_off(player_name)
-epa_on_off("A.J. Brown")
+AJ_BROWN = epa_on_off("A.J. Brown")
+DARNELL_MOONEY = epa_on_off("Darnell Mooney")
+JERRY_JEUDY = epa_on_off("Jerry Jeudy")
+EMEKA_EGBUKA = epa_on_off("Emeka Egbuka")
+MARQUISE_BROWN = epa_on_off("Marquise brown")
+LADD_MCCONKEY = epa_on_off("Ladd McConkey")
+DEEBO_SAMUEL_SR = epa_on_off("Deebo Samuel Sr.")
+CHRISTIAN_WATSON = epa_on_off("Christian Watson")
+TERRY_MCLAURIN = epa_on_off("Terry McLaurin")
+GEORGE_PICKENS = epa_on_off("George Pickens")
+
