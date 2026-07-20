@@ -25,11 +25,11 @@ rosters <- load_rosters(season) |>
 epa_on_off <- function(player_name) {
   player_id <- rosters$gsis_id[rosters$full_name == player_name]
   
-  participation <- participation |>
+  participation_player <- participation |>
     mutate(player_on_field = str_detect(offense_players, fixed(player_id)))
   
   pbp |>
-    left_join(participation, by = c("game_id" = "nflverse_game_id", "play_id")) |>
+    left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
     filter(!is.na(epa), play_type == "pass") |>
     group_by(player_on_field)
 }
