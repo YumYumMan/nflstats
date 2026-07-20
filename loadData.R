@@ -4,6 +4,12 @@ library(nflreadr)
 season <- 2025
 player_name <- "CeeDee Lamb"
 
+player_names <- c(
+  "CeeDee Lamb", "Justin Jefferson", "Ja'Marr Chase", "A.J. Brown",
+  "Amon-Ra St. Brown", "Puka Nacua", "Garrett Wilson", "Nico Collins",
+  "Drake London", "Malik Nabers"
+)
+
 pbp <- load_pbp(season)
 
 pbp <- pbp |>
@@ -16,12 +22,17 @@ rosters <- load_rosters(season) |>
   distinct(gsis_id, .keep_all = TRUE) |>
   select(gsis_id, full_name)
 
-player_id <- rosters$gsis_id[rosters$full_name == player_name]
+epa_on_off <- function(player_name) {
+  player_id <- rosters$gsis_id[rosters$full_name == player_name]
+  
+  participation <- participation |>
+    mutate(player_on_field = str_detect(offense_players, fixed(player_id)))
+  
+  pbp |>
+    left_join(participation, by = c("game_id" = "nflverse_game_id", "play_id")) |>
+    filter(!is.na(epa), play_type == "pass") |>
+    group_by(player_on_field)
+}
 
-participation <- participation |>
-  mutate(player_on_field = str_detect(offense_players, fixed(player_id)))
-
-pbp <- pbp |>
-  left_join(participation, by = c("game_id" = "nflverse_game_id", "play_id")) |>
-  filter(!is.na(epa), play_type == "pass") |>
-  group_by(player_on_field)
+epa_on_off(player_name)
+epa_on_off("A.J. Brown")
