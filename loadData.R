@@ -1,6 +1,54 @@
 library(tidyverse)
 library(nflreadr)
 
+my_vector <- c("mharrisonjr",
+                              "mwilson",
+                              "dlondon",
+                              "dmooney",
+                              "zflowers",
+                              "kshakir",
+                              "tmcmillan",
+                              "dmoore",
+                              "jchase",
+                              "jjeudy",
+                              "clamb",
+                              "gpickens",
+                              "csutton",
+                              "astbrown",
+                              "cwatson",
+                              "rdoubs",
+                              "ncollins",
+                              "mpittmanjr",
+                              "bthomasjr",
+                              "rrice",
+                              "xworthy",
+                              "mbrown",
+                              "jmeyers",
+                              "ttucker",
+                              "lmcconkey",
+                              "pnacua",
+                              "thill",
+                              "jwaddle",
+                              "jjefferson",
+                              "sdiggs",
+                              "colave",
+                              "mnabers",
+                              "wrobinson",
+                              "gwilson",
+                              "jmetchieiii",
+                              "abrown",
+                              "dmetcalf",
+                              "jjennings",
+                              "jsmithnjigba",
+                              "mevans",
+                              "eegbuka",
+                              "cridley",
+                              "eayomanor",
+                              "tmclaurin",
+                              "dsamuelsr")
+                              
+sample(my_vector, size = 10)
+
 season <- 2025
 player_name <- "CeeDee Lamb"
 
