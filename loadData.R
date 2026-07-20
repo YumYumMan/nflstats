@@ -33,7 +33,12 @@ epa_on_off <- function(player_name) {
   pbp |>
     left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
     filter(!is.na(epa), play_type == "pass") |>
-    group_by(player_on_field)
+    group_by(player_on_field) |>
+    summarise(
+      plays = n(),
+      epa_per_play = mean(epa),
+      .groups = "drop"
+    )
 }
 
 epa_on_off(player_name)
