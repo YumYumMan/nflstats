@@ -24,8 +24,4 @@ participation <- participation |>
 pbp <- pbp |>
   left_join(participation, by = c("game_id" = "nflverse_game_id", "play_id")) |>
   filter(!is.na(epa), play_type == "pass") |>
-  group_by(player_on_field)# |>
-  #summarise(plays = n(), epa_per_play = mean(epa), .groups = "drop")
-
-filter(pbp, play_type == "pass") |>
-  select(play_type)
+  group_by(player_on_field)
