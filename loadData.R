@@ -5,10 +5,12 @@ season <- 2025
 player_name <- "CeeDee Lamb"
 
 player_names <- c(
-  "CeeDee Lamb", "Justin Jefferson", "Ja'Marr Chase", "A.J. Brown",
-  "Amon-Ra St. Brown", "Puka Nacua", "Garrett Wilson", "Nico Collins",
-  "Drake London", "Malik Nabers"
-)
+   "Darnell Mooney", "George Pickens", "Jerry Jeudy",
+  "Emeka Egbuka", "Marquise Brown", "Ladd McConkey",
+  "Deebo Samuel Sr.", "Christian Watson", "Terry McLaurin",
+  "A.J. Brown"
+))
+
 
 pbp <- load_pbp(season)
 
