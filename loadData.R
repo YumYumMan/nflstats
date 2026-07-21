@@ -1,61 +1,8 @@
 library(tidyverse)
 library(nflreadr)
 
-
-all_wr1s <- c("mharrisonjr",
-              "mwilson",
-              "dlondon",
-              "dmooney",
-              "zflowers",
-              "kshakir",
-              "tmcmillan",
-              "dmoore",
-              "jchase",
-              "jjeudy",
-              "clamb",
-              "gpickens",
-              "csutton",
-              "astbrown",
-              "cwatson",
-              "rdoubs",
-              "ncollins",
-              "mpittmanjr",
-              "bthomasjr",
-              "rrice",
-              "xworthy",
-              "mbrown",
-              "jmeyers",
-              "ttucker",
-              "lmcconkey",
-              "pnacua",
-              "thill",
-              "jwaddle",
-              "jjefferson",
-              "sdiggs",
-              "colave",
-              "mnabers",
-              "wrobinson",
-              "gwilson",
-              "jmetchieiii",
-              "abrown",
-              "dmetcalf",
-              "jjennings",
-              "jsmithnjigba",
-              "mevans",
-              "eegbuka",
-              "cridley",
-              "eayomanor",
-              "tmclaurin",
-              "dsamuelsr")
-
-sample(all_wr1s, size = 10)
-
-player_names <- c(
-  "Zay Flowers", "Tet McMillan", "Jerry Jeudy",
-  "Khalil Shakir", "M", "Ladd McConkey",
-  "Deebo Samuel Sr.", "Christian Watson", "Terry McLaurin",
-  "A.J. Brown"
-)
+player_names <- c("Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
+                  "Chris Olave", "A.J. Brown", "DK Metcalf", "Jauan Jennings", "Jaxon Smith-Njigba")
 
 pbp <- load_pbp(2025)
 
@@ -90,56 +37,52 @@ epa_on_off <- function(player_name, team) {
     )
 }
 
-AJ_BROWN = epa_on_off("A.J. Brown", "PHI")
-DARNELL_MOONEY = epa_on_off("Darnell Mooney", "ATL")
-JERRY_JEUDY = epa_on_off("Jerry Jeudy", "DEN")
-EMEKA_EGBUKA = epa_on_off("Emeka Egbuka", "TB")
-MARQUISE_BROWN = epa_on_off("Marquise Brown", "KC")
-LADD_MCCONKEY = epa_on_off("Ladd McConkey", "LAC")
-DEEBO_SAMUEL_SR = epa_on_off("Deebo Samuel Sr.", "WAS")
-CHRISTIAN_WATSON = epa_on_off("Christian Watson", "GB")
-TERRY_MCLAURIN = epa_on_off("Terry McLaurin", "WAS")
-GEORGE_PICKENS = epa_on_off("George Pickens", "DAL")
+BTJ = epa_on_off("Brian Thomas Jr.", "JAC")
+MCCONKEY = epa_on_off("Ladd McConkey", "LA")
+NACUA = epa_on_off("Puka Nacua", "LA")
+JEFFERSON = epa_on_off("Justin Jefferson", "MIN")
+DIGGS = epa_on_off("Stefon Diggs", "NE")
+OLAVE = epa_on_off("Chris Olave", "NO")
+BROWN = epa_on_off("A.J. Brown", "PHI")
+METCALF = epa_on_off("DK Metcalf", "PIT")
+JENNINGS = epa_on_off("Jauan Jennings", "SF")
+JSN = epa_on_off("Jaxon Smith-Njigba", "SEA")
 
-pickens_diff = GEORGE_PICKENS$epa_per_play[GEORGE_PICKENS$player_on_field == TRUE] - 
-  GEORGE_PICKENS$epa_per_play[GEORGE_PICKENS$player_on_field == FALSE]
+btj_diff = BTJ$epa_per_play[BTJ$player_on_field == TRUE] - 
+  BTJ$epa_per_play[BTJ$player_on_field == FALSE]
 
-aj_brown_diff = AJ_BROWN$epa_per_play[AJ_BROWN$player_on_field == TRUE] - 
-  AJ_BROWN$epa_per_play[AJ_BROWN$player_on_field == FALSE]
+mcconkey_diff = MCCONKEY$epa_per_play[MCCONKEY$player_on_field == TRUE] - 
+  MCCONKEY$epa_per_play[MCCONKEY$player_on_field == FALSE]
 
-mooney_diff = DARNELL_MOONEY$epa_per_play[DARNELL_MOONEY$player_on_field == TRUE] - 
-  DARNELL_MOONEY$epa_per_play[DARNELL_MOONEY$player_on_field == FALSE]
+nacua_diff = NACUA$epa_per_play[NACUA$player_on_field == TRUE] - 
+  NACUA$epa_per_play[NACUA$player_on_field == FALSE]
 
-jeudy_diff = JERRY_JEUDY$epa_per_play[JERRY_JEUDY$player_on_field == TRUE] - 
-  JERRY_JEUDY$epa_per_play[JERRY_JEUDY$player_on_field == FALSE]
+jefferson_diff = JEFFERSON$epa_per_play[JEFFERSON$player_on_field == TRUE] - 
+  JEFFERSON$epa_per_play[JEFFERSON$player_on_field == FALSE]
 
-egbuka_diff = EMEKA_EGBUKA$epa_per_play[EMEKA_EGBUKA$player_on_field == TRUE] - 
-  EMEKA_EGBUKA$epa_per_play[EMEKA_EGBUKA$player_on_field == FALSE]
+diggs_diff = DIGGS$epa_per_play[DIGGS$player_on_field == TRUE] - 
+  DIGGS$epa_per_play[DIGGS$player_on_field == FALSE]
 
-mbrown_diff = MARQUISE_BROWN$epa_per_play[MARQUISE_BROWN$player_on_field == TRUE] - 
-  MARQUISE_BROWN$epa_per_play[MARQUISE_BROWN$player_on_field == FALSE]
+olave_diff = OLAVE$epa_per_play[OLAVE$player_on_field == TRUE] - 
+  OLAVE$epa_per_play[OLAVE$player_on_field == FALSE]
 
-mcconkey_diff = LADD_MCCONKEY$epa_per_play[LADD_MCCONKEY$player_on_field == TRUE] - 
-  LADD_MCCONKEY$epa_per_play[LADD_MCCONKEY$player_on_field == FALSE]
+brown_diff = BROWN$epa_per_play[BROWN$player_on_field == TRUE] - 
+  BROWN$epa_per_play[BROWN$player_on_field == FALSE]
 
-deebo_diff = DEEBO_SAMUEL_SR$epa_per_play[DEEBO_SAMUEL_SR$player_on_field == TRUE] - 
-  DEEBO_SAMUEL_SR$epa_per_play[DEEBO_SAMUEL_SR$player_on_field == FALSE]
+metcalf_diff = METCALF$epa_per_play[METCALF$player_on_field == TRUE] - 
+  METCALF$epa_per_play[METCALF$player_on_field == FALSE]
 
-watson_diff = CHRISTIAN_WATSON$epa_per_play[CHRISTIAN_WATSON$player_on_field == TRUE] - 
-  CHRISTIAN_WATSON$epa_per_play[CHRISTIAN_WATSON$player_on_field == FALSE]
+jennings_diff = JENNINGS$epa_per_play[JENNINGS$player_on_field == TRUE] - 
+  JENNINGS$epa_per_play[JENNINGS$player_on_field == FALSE]
 
-mclaurin_diff = TERRY_MCLAURIN$epa_per_play[TERRY_MCLAURIN$player_on_field == TRUE] - 
-  TERRY_MCLAURIN$epa_per_play[TERRY_MCLAURIN$player_on_field == FALSE]
-
+jsn_diff = JSN$epa_per_play[JSN$player_on_field == TRUE] - 
+  JSN$epa_per_play[JSN$player_on_field == FALSE]
 
 diff_tibble = tibble(
-  player = c("George Pickens", "A.J. Brown", "Darnell Mooney",
-             "Emeka Egbuka", "Marquise Brown", "Ladd McConkey", "Deebo Samuel Sr.",
-             "Christian Watson", "Terry McLaurin"),
-  diff = c(pickens_diff, aj_brown_diff, mooney_diff,
-           egbuka_diff, mbrown_diff, mcconkey_diff, deebo_diff,
-           watson_diff, mclaurin_diff))
-
+  player = c("Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
+             "Chris Olave", "A.J. Brown", "DK Metcalf"," Jaxon Smith-Njigba"),
+  diff = c(btj_diff, mcconkey_diff, nacua_diff, jefferson_diff,
+           metcalf_diff, olave_diff, brown_diff, metcalf_diff, jsn_diff))
 
 diff_tibble
 
@@ -154,8 +97,5 @@ ggplot(data = diff_tibble) +
     fill = "EPA Diff") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
-
 
 
