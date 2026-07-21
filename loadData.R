@@ -61,7 +61,7 @@ pbp <- load_pbp(2025)
 pbp = filter(pbp, week >= 1 & week <=18)
 
 pbp <- pbp |>
-  select(game_id, play_id, home_team, posteam, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiving_yards)
+  select(game_id, play_id, home_team, posteam, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiver_player_id, receiving_yards)
 
 participation <- load_participation(2025, include_pbp = FALSE) |>
   select(nflverse_game_id, play_id, offense_players)
@@ -78,7 +78,9 @@ epa_on_off <- function(player_name, team) {
   
   pbp |>
     left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
-    filter(!is.na(epa), play_type == "pass", posteam == team) |>
+    filter(!is.na(epa), play_type == "pass", posteam == team,
+           !is.na(receiver_player_id),
+           receiver_player_id != player_id) |>
     group_by(player_on_field) |>
     summarise(
       plays = n(),
@@ -87,7 +89,7 @@ epa_on_off <- function(player_name, team) {
     )
 }
 
-AJ_BROWN = epa_on_off("A.J. Brown", "PHI")
+  = epa_on_off("A.J. Brown", "PHI")
 DARNELL_MOONEY = epa_on_off("Darnell Mooney", "ATL")
 JERRY_JEUDY = epa_on_off("Jerry Jeudy", "DEN")
 EMEKA_EGBUKA = epa_on_off("Emeka Egbuka", "TB")
@@ -97,16 +99,3 @@ DEEBO_SAMUEL_SR = epa_on_off("Deebo Samuel Sr.", "WAS")
 CHRISTIAN_WATSON = epa_on_off("Christian Watson", "GB")
 TERRY_MCLAURIN = epa_on_off("Terry McLaurin", "WAS")
 GEORGE_PICKENS = epa_on_off("George Pickens", "DAL")
-
-
-ggplot() +
-  geom_point(data = AJ_BROWN, aes(x = plays, y = epa_per_play), col = "red") +
-  geom_point(data = DARNELL_MOONEY, aes(x = plays, y = epa_per_play), col = "blue") +
-  geom_point(data = JERRY_JEUDY, aes(x = plays, y = epa_per_play), col = "magenta") +
-  geom_point(data = EMEKA_EGBUKA, aes(x = plays, y = epa_per_play), col = "darkgreen") +
-  geom_point(data = LADD_MCCONKEY, aes(x = plays, y = epa_per_play), col = "darkblue") +
-  geom_point(data = DEEBO_SAMUEL_SR, aes(x = plays, y = epa_per_play), col = "black") +
-  geom_point(data = TERRY_MCLAURIN, aes(x = plays, y = epa_per_play), col = "green") +
-  geom_point(data = GEORGE_PICKENS, aes(x = plays, y = epa_per_play), col = "brown") +
-  geom_point(data = MARQUISE_BROWN, aes(x = plays, y = epa_per_play), col = "pink") +
-  geom_point(data = CHRISTIAN_WATSON, aes(x = plays, y = epa_per_play), col = "purple")
