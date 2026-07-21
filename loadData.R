@@ -1,8 +1,12 @@
 library(tidyverse)
 library(nflreadr)
 
-player_names <- c("Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
-                  "Chris Olave", "A.J. Brown", "DK Metcalf", "Jauan Jennings", "Jaxon Smith-Njigba")
+player_names <- c(
+  "Zay Flowers", "Tetairoa McMillan", "Jerry Jeudy",
+  "Khalil Shakir", "DJ Moore", "Ja'Marr Chase",
+  "Courtland Sutton", "Amon-Ra St. Brown", "Nico Collins",
+  "Michael Pittman", "Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
+  "Chris Olave", "A.J. Brown", "DK Metcalf", "Jauan Jennings", "Jaxon Smith-Njigba")
 
 pbp <- load_pbp(2025)
 
@@ -37,8 +41,19 @@ epa_on_off <- function(player_name, team) {
     )
 }
 
-BTJ = epa_on_off("Brian Thomas Jr.", "JAC")
-MCCONKEY = epa_on_off("Ladd McConkey", "LA")
+FLOWERS =  epa_on_off("Zay Flowers", "BAL")
+TETAIROA = epa_on_off("Tetairoa McMillan", "CAR")
+SHAKIR =  epa_on_off("Khalil Shakir", "BUF")
+DJ_MOORE =  epa_on_off("DJ Moore", "CHI")
+CHASE =  epa_on_off("Ja'Marr Chase", "CIN")
+SUTTON =  epa_on_off("Courtland Sutton", "DEN")
+JEUDY = epa_on_off("Jerry Jeudy", "CLE")
+ST_BROWN =  epa_on_off("Amon-Ra St. Brown", "DET")
+COLLINS =  epa_on_off("Nico Collins", "HOU")
+PITTMAN =  epa_on_off("Michael Pittman", "IND")
+
+BTJ = epa_on_off("Brian Thomas Jr.", "JAX")
+MCCONKEY = epa_on_off("Ladd McConkey", "LAC")
 NACUA = epa_on_off("Puka Nacua", "LA")
 JEFFERSON = epa_on_off("Justin Jefferson", "MIN")
 DIGGS = epa_on_off("Stefon Diggs", "NE")
@@ -78,17 +93,58 @@ jennings_diff = JENNINGS$epa_per_play[JENNINGS$player_on_field == TRUE] -
 jsn_diff = JSN$epa_per_play[JSN$player_on_field == TRUE] - 
   JSN$epa_per_play[JSN$player_on_field == FALSE]
 
+
+
+flowers_diff = FLOWERS$epa_per_play[FLOWERS$player_on_field == TRUE] - 
+ FLOWERS$epa_per_play[FLOWERS$player_on_field == FALSE]
+
+tet_diff = TETAIROA$epa_per_play[TETAIROA$player_on_field == TRUE] - 
+  TETAIROA$epa_per_play[TETAIROA$player_on_field == FALSE]
+
+shakir_diff = SHAKIR$epa_per_play[SHAKIR$player_on_field == TRUE] - 
+  SHAKIR$epa_per_play[SHAKIR$player_on_field == FALSE]
+
+djmoore_diff = DJ_MOORE$epa_per_play[DJ_MOORE$player_on_field == TRUE] - 
+  DJ_MOORE$epa_per_play[DJ_MOORE$player_on_field == FALSE]
+
+chase_diff = CHASE$epa_per_play[CHASE$player_on_field == TRUE] - 
+  CHASE$epa_per_play[CHASE$player_on_field == FALSE]
+
+sutton_diff = SUTTON$epa_per_play[SUTTON$player_on_field == TRUE] - 
+  SUTTON$epa_per_play[SUTTON$player_on_field == FALSE]
+
+jeudy_diff = JEUDY$epa_per_play[JEUDY$player_on_field == TRUE] - 
+  JEUDY$epa_per_play[JEUDY$player_on_field == FALSE]
+
+stbrown_diff = ST_BROWN$epa_per_play[ST_BROWN$player_on_field == TRUE] - 
+  ST_BROWN$epa_per_play[ST_BROWN$player_on_field == FALSE]
+
+collins_diff = COLLINS$epa_per_play[COLLINS$player_on_field == TRUE] - 
+  COLLINS$epa_per_play[COLLINS$player_on_field == FALSE]
+
+pittman_diff = PITTMAN$epa_per_play[PITTMAN$player_on_field == TRUE] - 
+  PITTMAN$epa_per_play[PITTMAN$player_on_field == FALSE]
+
+
 diff_tibble = tibble(
-  player = c("Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
-             "Chris Olave", "A.J. Brown", "DK Metcalf"," Jaxon Smith-Njigba"),
-  diff = c(btj_diff, mcconkey_diff, nacua_diff, jefferson_diff,
-           metcalf_diff, olave_diff, brown_diff, metcalf_diff, jsn_diff))
+  player = c(
+    "Zay Flowers", "Tetairoa McMillan", "Jerry Jeudy",
+    "Khalil Shakir", "DJ Moore", "Ja'Marr Chase",
+    "Courtland Sutton", "Amon-Ra St. Brown", "Nico Collins",
+    "Michael Pittman", "Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
+    "Chris Olave", "A.J. Brown", "DK Metcalf", "Jauan Jennings", "Jaxon Smith-Njigba"),
+  diff = c(flowers_diff, tet_diff, jeudy_diff,
+           shakir_diff,djmoore_diff, chase_diff, sutton_diff,
+           stbrown_diff, collins_diff, pittman_diff, btj_diff, mcconkey_diff, nacua_diff, jefferson_diff,
+           diggs_diff, olave_diff, brown_diff, metcalf_diff, jennings_diff, jsn_diff)) |>
+  arrange(diff)
+
 
 diff_tibble
 
 
 ggplot(data = diff_tibble) +
-  geom_col(aes(x = player, y = diff, fill = diff)) +
+  geom_col(aes(x = reorder(player, -diff), y = diff, fill = diff)) +
   scale_fill_gradient2(low = "red", mid = "grey", high = "darkblue", midpoint = 0) +
   labs(
     title = "EPA Differential (On vs Off Field)",
@@ -97,5 +153,9 @@ ggplot(data = diff_tibble) +
     fill = "EPA Diff") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
 
 
