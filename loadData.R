@@ -97,3 +97,16 @@ DEEBO_SAMUEL_SR = epa_on_off("Deebo Samuel Sr.", "WAS")
 CHRISTIAN_WATSON = epa_on_off("Christian Watson", "GB")
 TERRY_MCLAURIN = epa_on_off("Terry McLaurin", "WAS")
 GEORGE_PICKENS = epa_on_off("George Pickens", "DAL")
+
+
+ggplot() +
+  geom_point(data = AJ_BROWN, aes(x = plays, y = epa_per_play), col = "red") +
+  geom_point(data = DARNELL_MOONEY, aes(x = plays, y = epa_per_play), col = "blue") +
+  geom_point(data = JERRY_JEUDY, aes(x = plays, y = epa_per_play), col = "magenta") +
+  geom_point(data = EMEKA_EGBUKA, aes(x = plays, y = epa_per_play), col = "darkgreen") +
+  geom_point(data = LADD_MCCONKEY, aes(x = plays, y = epa_per_play), col = "darkblue") +
+  geom_point(data = DEEBO_SAMUEL_SR, aes(x = plays, y = epa_per_play), col = "black") +
+  geom_point(data = TERRY_MCLAURIN, aes(x = plays, y = epa_per_play), col = "green") +
+  geom_point(data = GEORGE_PICKENS, aes(x = plays, y = epa_per_play), col = "brown") +
+  geom_point(data = MARQUISE_BROWN, aes(x = plays, y = epa_per_play), col = "pink") +
+  geom_point(data = CHRISTIAN_WATSON, aes(x = plays, y = epa_per_play), col = "purple")
