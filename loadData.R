@@ -89,7 +89,7 @@ epa_on_off <- function(player_name, team) {
     )
 }
 
-  = epa_on_off("A.J. Brown", "PHI")
+AJ_BROWN = epa_on_off("A.J. Brown", "PHI")
 DARNELL_MOONEY = epa_on_off("Darnell Mooney", "ATL")
 JERRY_JEUDY = epa_on_off("Jerry Jeudy", "DEN")
 EMEKA_EGBUKA = epa_on_off("Emeka Egbuka", "TB")
