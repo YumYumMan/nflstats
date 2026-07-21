@@ -49,6 +49,8 @@ my_vector <- c("mharrisonjr",
                               
 sample(my_vector, size = 10)
 
+pbp_2025_wk18 = filter(pbp_2025, week >= 1 & week <=18)
+
 season <- 2025
 player_name <- "CeeDee Lamb"
 
