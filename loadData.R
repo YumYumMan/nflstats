@@ -61,7 +61,7 @@ pbp <- load_pbp(2025)
 pbp = filter(pbp, week >= 1 & week <=18)
 
 pbp <- pbp |>
-  select(game_id, play_id, home_team, posteam, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiver_player_id, receiving_yards)
+  select(game_id, play_id, desc, home_team, posteam, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiver_player_id, receiving_yards)
 
 participation <- load_participation(2025, include_pbp = FALSE) |>
   select(nflverse_game_id, play_id, offense_players)
@@ -99,3 +99,9 @@ DEEBO_SAMUEL_SR = epa_on_off("Deebo Samuel Sr.", "WAS")
 CHRISTIAN_WATSON = epa_on_off("Christian Watson", "GB")
 TERRY_MCLAURIN = epa_on_off("Terry McLaurin", "WAS")
 GEORGE_PICKENS = epa_on_off("George Pickens", "DAL")
+
+
+
+TERRY_MCLAURIN
+JERRY_JEUDY
+AJ_BROWN
