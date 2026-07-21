@@ -2,50 +2,50 @@ library(tidyverse)
 library(nflreadr)
 
 all_wr1s <- c("mharrisonjr",
-               "mwilson",
-               "dlondon",
-               "dmooney",
-               "zflowers",
-               "kshakir",
-               "tmcmillan",
-               "dmoore",
-               "jchase",
-               "jjeudy",
-               "clamb",
-               "gpickens",
-               "csutton",
-               "astbrown",
-               "cwatson",
-               "rdoubs",
-               "ncollins",
-               "mpittmanjr",
-               "bthomasjr",
-               "rrice",
-               "xworthy",
-               "mbrown",
-               "jmeyers",
-               "ttucker",
-               "lmcconkey",
-               "pnacua",
-               "thill",
-               "jwaddle",
-               "jjefferson",
-               "sdiggs",
-               "colave",
-               "mnabers",
-               "wrobinson",
-               "gwilson",
-               "jmetchieiii",
-               "abrown",
-               "dmetcalf",
-               "jjennings",
-               "jsmithnjigba",
-               "mevans",
-               "eegbuka",
-               "cridley",
-               "eayomanor",
-               "tmclaurin",
-               "dsamuelsr")
+              "mwilson",
+              "dlondon",
+              "dmooney",
+              "zflowers",
+              "kshakir",
+              "tmcmillan",
+              "dmoore",
+              "jchase",
+              "jjeudy",
+              "clamb",
+              "gpickens",
+              "csutton",
+              "astbrown",
+              "cwatson",
+              "rdoubs",
+              "ncollins",
+              "mpittmanjr",
+              "bthomasjr",
+              "rrice",
+              "xworthy",
+              "mbrown",
+              "jmeyers",
+              "ttucker",
+              "lmcconkey",
+              "pnacua",
+              "thill",
+              "jwaddle",
+              "jjefferson",
+              "sdiggs",
+              "colave",
+              "mnabers",
+              "wrobinson",
+              "gwilson",
+              "jmetchieiii",
+              "abrown",
+              "dmetcalf",
+              "jjennings",
+              "jsmithnjigba",
+              "mevans",
+              "eegbuka",
+              "cridley",
+              "eayomanor",
+              "tmclaurin",
+              "dsamuelsr")
 
 sample(all_wr1s, size = 10)
 
@@ -56,17 +56,17 @@ player_names <- c(
   "A.J. Brown"
 )
 
-pbp <- load_pbp(season)
+pbp <- load_pbp(2025)
 
 pbp = filter(pbp, week >= 1 & week <=18)
 
 pbp <- pbp |>
   select(game_id, play_id, home_team, posteam, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiving_yards)
 
-participation <- load_participation(season, include_pbp = FALSE) |>
+participation <- load_participation(2025, include_pbp = FALSE) |>
   select(nflverse_game_id, play_id, offense_players)
 
-rosters <- load_rosters(season) |>
+rosters <- load_rosters(2025) |>
   distinct(gsis_id, .keep_all = TRUE) |>
   select(gsis_id, full_name)
 
@@ -97,5 +97,3 @@ DEEBO_SAMUEL_SR = epa_on_off("Deebo Samuel Sr.", "WAS")
 CHRISTIAN_WATSON = epa_on_off("Christian Watson", "GB")
 TERRY_MCLAURIN = epa_on_off("Terry McLaurin", "WAS")
 GEORGE_PICKENS = epa_on_off("George Pickens", "DAL")
-
-
