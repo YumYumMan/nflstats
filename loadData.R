@@ -1,7 +1,7 @@
 library(tidyverse)
 library(nflreadr)
 
-my_vector <- c("mharrisonjr",
+all_wr1s <- c("mharrisonjr",
                               "mwilson",
                               "dlondon",
                               "dmooney",
@@ -47,7 +47,7 @@ my_vector <- c("mharrisonjr",
                               "tmclaurin",
                               "dsamuelsr")
                               
-sample(my_vector, size = 10)
+sample(all_wr1s, size = 10)
 
 player_names <- c(
    "Darnell Mooney", "George Pickens", "Jerry Jeudy",
