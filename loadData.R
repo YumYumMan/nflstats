@@ -49,20 +49,16 @@ my_vector <- c("mharrisonjr",
                               
 sample(my_vector, size = 10)
 
-pbp_2025_wk18 = filter(pbp_2025, week >= 1 & week <=18)
-
-season <- 2025
-player_name <- "CeeDee Lamb"
-
 player_names <- c(
    "Darnell Mooney", "George Pickens", "Jerry Jeudy",
   "Emeka Egbuka", "Marquise Brown", "Ladd McConkey",
   "Deebo Samuel Sr.", "Christian Watson", "Terry McLaurin",
   "A.J. Brown"
-))
-
+)
 
 pbp <- load_pbp(season)
+
+pbp = filter(pbp, week >= 1 & week <=18)
 
 pbp <- pbp |>
   select(game_id, play_id, home_team, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiving_yards)
