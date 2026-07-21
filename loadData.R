@@ -102,6 +102,7 @@ GEORGE_PICKENS = epa_on_off("George Pickens", "DAL")
 
 
 
-TERRY_MCLAURIN
-JERRY_JEUDY
-AJ_BROWN
+
+  
+
+
