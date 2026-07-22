@@ -33,4 +33,12 @@ ggplot(data = diff_tibble) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+ggplot(data = pval_tbl, aes(x = player, y = p_value, group = 1)) +
+  geom_point(col = "magenta", size = 5) +
+  geom_line( col = "black", linewidth = 1) +
+  labs(title = "Permutation Test Values",
+       x = "Player", y = "P-Value") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
