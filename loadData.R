@@ -8,32 +8,46 @@ player_names <- c(
   "Michael Pittman", "Brian Thomas Jr.", "Ladd McConkey", "Puka Nacua", "Justin Jefferson", "Stefon Diggs",
   "Chris Olave", "A.J. Brown", "DK Metcalf", "Jauan Jennings", "Jaxon Smith-Njigba")
 
+# load data
 pbp <- load_pbp(2025)
 
+# only week 1 to 18
 pbp = filter(pbp, week >= 1 & week <=18)
 
+# remove useless columns
 pbp <- pbp |>
   select(game_id, play_id, desc, home_team, posteam, away_team, week, play_type, pass_length, yards_after_catch, epa, air_epa, yac_epa, wp, passer_player_name, receiver_player_name, receiver_player_id, receiving_yards)
 
+# load offensive players
 participation <- load_participation(2025, include_pbp = FALSE) |>
   select(nflverse_game_id, play_id, offense_players)
 
+# load player names and ids
 rosters <- load_rosters(2025) |>
   distinct(gsis_id, .keep_all = TRUE) |>
   select(gsis_id, full_name)
 
+read_csv("data")
+
+# make function to get epa data
 epa_on_off <- function(player_name, team) {
+  # get player id from the name
   player_id <- rosters$gsis_id[rosters$full_name == player_name]
-  
+  # check if the wr is on the field
   participation_player <- participation |>
     mutate(player_on_field = str_detect(offense_players, fixed(player_id)))
   
+  # make a summary tibble for epa
   pbp = pbp |>
+    # combine datasets
     left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
+    # filter for only passes and wrs team
     filter(!is.na(epa), play_type == "pass", posteam == team,
            !is.na(receiver_player_id),
+           # exclude plays to the wr1
            receiver_player_id != player_id) |>
     group_by(player_on_field) |>
+    # calculate epa per play
     summarise(
       plays = n(),
       epa_per_play = mean(epa),
@@ -41,6 +55,7 @@ epa_on_off <- function(player_name, team) {
     )
 }
 
+# calculate epa for all players
 FLOWERS =  epa_on_off("Zay Flowers", "BAL")
 TETAIROA = epa_on_off("Tetairoa McMillan", "CAR")
 SHAKIR =  epa_on_off("Khalil Shakir", "BUF")
@@ -51,7 +66,6 @@ JEUDY = epa_on_off("Jerry Jeudy", "CLE")
 ST_BROWN =  epa_on_off("Amon-Ra St. Brown", "DET")
 COLLINS =  epa_on_off("Nico Collins", "HOU")
 PITTMAN =  epa_on_off("Michael Pittman", "IND")
-
 BTJ = epa_on_off("Brian Thomas Jr.", "JAX")
 MCCONKEY = epa_on_off("Ladd McConkey", "LAC")
 NACUA = epa_on_off("Puka Nacua", "LA")
@@ -63,6 +77,7 @@ METCALF = epa_on_off("DK Metcalf", "PIT")
 JENNINGS = epa_on_off("Jauan Jennings", "SF")
 JSN = epa_on_off("Jaxon Smith-Njigba", "SEA")
 
+# calculate epa difference for all players
 btj_diff = BTJ$epa_per_play[BTJ$player_on_field == TRUE] - 
   BTJ$epa_per_play[BTJ$player_on_field == FALSE]
 
@@ -93,10 +108,8 @@ jennings_diff = JENNINGS$epa_per_play[JENNINGS$player_on_field == TRUE] -
 jsn_diff = JSN$epa_per_play[JSN$player_on_field == TRUE] - 
   JSN$epa_per_play[JSN$player_on_field == FALSE]
 
-
-
 flowers_diff = FLOWERS$epa_per_play[FLOWERS$player_on_field == TRUE] - 
- FLOWERS$epa_per_play[FLOWERS$player_on_field == FALSE]
+  FLOWERS$epa_per_play[FLOWERS$player_on_field == FALSE]
 
 tet_diff = TETAIROA$epa_per_play[TETAIROA$player_on_field == TRUE] - 
   TETAIROA$epa_per_play[TETAIROA$player_on_field == FALSE]
@@ -125,7 +138,7 @@ collins_diff = COLLINS$epa_per_play[COLLINS$player_on_field == TRUE] -
 pittman_diff = PITTMAN$epa_per_play[PITTMAN$player_on_field == TRUE] - 
   PITTMAN$epa_per_play[PITTMAN$player_on_field == FALSE]
 
-
+# make a tibble with the diifs
 diff_tibble = tibble(
   player = c(
     "Zay Flowers", "Tetairoa McMillan", "Jerry Jeudy",
@@ -138,18 +151,3 @@ diff_tibble = tibble(
            stbrown_diff, collins_diff, pittman_diff, btj_diff, mcconkey_diff, nacua_diff, jefferson_diff,
            diggs_diff, olave_diff, brown_diff, metcalf_diff, jennings_diff, jsn_diff)) |>
   arrange(diff)
-
-
-diff_tibble
-
-
-ggplot(data = diff_tibble) +
-  geom_col(aes(x = reorder(player, -diff), y = diff, fill = diff)) +
-  scale_fill_gradient2(low = "red", mid = "grey", high = "darkblue", midpoint = 0) +
-  labs(
-    title = "EPA Differential (On vs Off Field)",
-    x = "Player",
-    y = "EPA Difference",
-    fill = "EPA Diff") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
