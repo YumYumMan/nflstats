@@ -1,14 +1,36 @@
 ggplot() +
-  geom_point(data = AJ_BROWN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "red", size = 4) +
-  geom_point(data = DARNELL_MOONEY, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "blue", size = 4) +
-  geom_point(data = EMEKA_EGBUKA, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "darkgreen", size = 4) +
-  geom_point(data = LADD_MCCONKEY, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "darkblue", size = 4) +
-  geom_point(data = DEEBO_SAMUEL_SR, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "purple", size = 4) +
-  geom_point(data = TERRY_MCLAURIN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "green", size = 4) +
-  geom_point(data = GEORGE_PICKENS, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "brown", size = 4) +
-  geom_point(data = MARQUISE_BROWN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "pink", size = 4) +
-  geom_point(data = CHRISTIAN_WATSON, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "black", size = 4) +
+  geom_point(data = SUTTON, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "red", size = 4) +
+  geom_point(data = CHASE, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "blue", size = 4) +
+  geom_point(data = DJ_MOORE, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "darkgreen", size = 4) +
+  geom_point(data = TETAIROA, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "darkblue", size = 4) +
+  geom_point(data = FLOWERS, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "purple", size = 4) +
+  geom_point(data = SHAKIR, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "green", size = 4) +
+  geom_point(data = COLLINS, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "brown", size = 4) +
+  geom_point(data = ST_BROWN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "pink", size = 4) +
+  geom_point(data = PITTMAN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "black", size = 4) +
+  geom_point(data = BTJ, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "yellow", size = 4) +
+  geom_point(data = MCCONKEY, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "lightblue", size = 4) +
+  geom_point(data = NACUA, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "turquoise", size = 4) +
+  geom_point(data = JEFFERSON, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "magenta", size = 4) +
+  geom_point(data = DIGGS, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "grey", size = 4) +
+  geom_point(data = OLAVE, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "beige", size = 4) +
+  geom_point(data = BROWN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "lightpink", size = 4) +
+  geom_point(data = METCALF, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "chocolate", size = 4) +
+  geom_point(data = JENNINGS, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "aquamarine", size = 4) +
+  geom_point(data = JSN, aes(x = plays, y = epa_per_play, shape = player_on_field), col = "antiquewhite", size = 4) +
   labs(shape = "On Field", color = "Player") +
   theme_minimal()
   
+
+ggplot(data = diff_tibble) +
+  geom_col(aes(x = reorder(player, -diff), y = diff, fill = diff)) +
+  scale_fill_gradient2(low = "red", mid = "grey", high = "darkblue", midpoint = 0) +
+  labs(
+    title = "EPA Differential (On vs Off Field)",
+    x = "Player",
+    y = "EPA Difference",
+    fill = "EPA Diff") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
