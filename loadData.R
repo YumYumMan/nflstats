@@ -99,66 +99,32 @@ METCALF = epa_on_off("DK Metcalf", "PIT")
 JENNINGS = epa_on_off("Jauan Jennings", "SF")
 JSN = epa_on_off("Jaxon Smith-Njigba", "SEA")
 
+calculate_diff <- function(player_epa) {
+  player_epa$epa_per_play[player_epa$player_on_field == TRUE] - 
+    player_epa$epa_per_play[player_epa$player_on_field == FALSE]
+}
+
 # calculate epa difference for all players
-btj_diff = BTJ$epa_per_play[BTJ$player_on_field == TRUE] - 
-  BTJ$epa_per_play[BTJ$player_on_field == FALSE]
-
-mcconkey_diff = MCCONKEY$epa_per_play[MCCONKEY$player_on_field == TRUE] - 
-  MCCONKEY$epa_per_play[MCCONKEY$player_on_field == FALSE]
-
-nacua_diff = NACUA$epa_per_play[NACUA$player_on_field == TRUE] - 
-  NACUA$epa_per_play[NACUA$player_on_field == FALSE]
-
-jefferson_diff = JEFFERSON$epa_per_play[JEFFERSON$player_on_field == TRUE] - 
-  JEFFERSON$epa_per_play[JEFFERSON$player_on_field == FALSE]
-
-diggs_diff = DIGGS$epa_per_play[DIGGS$player_on_field == TRUE] - 
-  DIGGS$epa_per_play[DIGGS$player_on_field == FALSE]
-
-olave_diff = OLAVE$epa_per_play[OLAVE$player_on_field == TRUE] - 
-  OLAVE$epa_per_play[OLAVE$player_on_field == FALSE]
-
-brown_diff = BROWN$epa_per_play[BROWN$player_on_field == TRUE] - 
-  BROWN$epa_per_play[BROWN$player_on_field == FALSE]
-
-metcalf_diff = METCALF$epa_per_play[METCALF$player_on_field == TRUE] - 
-  METCALF$epa_per_play[METCALF$player_on_field == FALSE]
-
-jennings_diff = JENNINGS$epa_per_play[JENNINGS$player_on_field == TRUE] - 
-  JENNINGS$epa_per_play[JENNINGS$player_on_field == FALSE]
-
-jsn_diff = JSN$epa_per_play[JSN$player_on_field == TRUE] - 
-  JSN$epa_per_play[JSN$player_on_field == FALSE]
-
-flowers_diff = FLOWERS$epa_per_play[FLOWERS$player_on_field == TRUE] - 
-  FLOWERS$epa_per_play[FLOWERS$player_on_field == FALSE]
-
-tet_diff = TETAIROA$epa_per_play[TETAIROA$player_on_field == TRUE] - 
-  TETAIROA$epa_per_play[TETAIROA$player_on_field == FALSE]
-
-shakir_diff = SHAKIR$epa_per_play[SHAKIR$player_on_field == TRUE] - 
-  SHAKIR$epa_per_play[SHAKIR$player_on_field == FALSE]
-
-djmoore_diff = DJ_MOORE$epa_per_play[DJ_MOORE$player_on_field == TRUE] - 
-  DJ_MOORE$epa_per_play[DJ_MOORE$player_on_field == FALSE]
-
-chase_diff = CHASE$epa_per_play[CHASE$player_on_field == TRUE] - 
-  CHASE$epa_per_play[CHASE$player_on_field == FALSE]
-
-sutton_diff = SUTTON$epa_per_play[SUTTON$player_on_field == TRUE] - 
-  SUTTON$epa_per_play[SUTTON$player_on_field == FALSE]
-
-jeudy_diff = JEUDY$epa_per_play[JEUDY$player_on_field == TRUE] - 
-  JEUDY$epa_per_play[JEUDY$player_on_field == FALSE]
-
-stbrown_diff = ST_BROWN$epa_per_play[ST_BROWN$player_on_field == TRUE] - 
-  ST_BROWN$epa_per_play[ST_BROWN$player_on_field == FALSE]
-
-collins_diff = COLLINS$epa_per_play[COLLINS$player_on_field == TRUE] - 
-  COLLINS$epa_per_play[COLLINS$player_on_field == FALSE]
-
-pittman_diff = PITTMAN$epa_per_play[PITTMAN$player_on_field == TRUE] - 
-  PITTMAN$epa_per_play[PITTMAN$player_on_field == FALSE]
+btj_diff = calculate_diff(BTJ)
+mcconkey_diff = calculate_diff(MCCONKEY)
+nacua_diff = calculate_diff(NACUA)
+jefferson_diff = calculate_diff(JEFFERSON)
+diggs_diff = calculate_diff(DIGGS)
+olave_diff = calculate_diff(OLAVE)
+brown_diff = calculate_diff(BROWN)
+metcalf_diff = calculate_diff(METCALF)
+jennings_diff = calculate_diff(JENNINGS)
+jsn_diff = calculate_diff(JSN)
+flowers_diff = calculate_diff(FLOWERS)
+tet_diff = calculate_diff(TETAIROA)
+shakir_diff = calculate_diff(SHAKIR)
+djmoore_diff = calculate_diff(DJ_MOORE)
+chase_diff = calculate_diff(CHASE)
+sutton_diff = calculate_diff(SUTTON)
+jeudy_diff = calculate_diff(JEUDY)
+stbrown_diff = calculate_diff(ST_BROWN)
+collins_diff = calculate_diff(COLLINS)
+pittman_diff = calculate_diff(PITTMAN)
 
 # make a tibble with the diifs
 diff_tibble = tibble(
