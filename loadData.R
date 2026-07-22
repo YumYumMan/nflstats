@@ -27,25 +27,47 @@ rosters <- load_rosters(2025) |>
   distinct(gsis_id, .keep_all = TRUE) |>
   select(gsis_id, full_name)
 
-read_csv("data")
+activity <- read_csv("data/WR Data - Sheet1.csv")
+
+# merge columns
+activity <- activity |>
+  pivot_longer(
+    cols = starts_with("is_wr1_w"),
+    names_to = "week",
+    names_prefix = "is_wr1_w",
+    values_to = "is_wr1"
+  )
+
+get_id <- function(player_name) {
+  # get player id from the name
+  rosters$gsis_id[rosters$full_name == player_name]
+}
+
+# make a function that returns the weeks a wr was wr1
+wr1_on_weeks <- function(player_name) {
+  activity |>
+    filter(Name == player_name, is_wr1 == 1) |>
+    pull(week)
+}
 
 # make function to get epa data
 epa_on_off <- function(player_name, team) {
-  # get player id from the name
-  player_id <- rosters$gsis_id[rosters$full_name == player_name]
+  player_id <- get_id(player_name)
   # check if the wr is on the field
   participation_player <- participation |>
     mutate(player_on_field = str_detect(offense_players, fixed(player_id)))
   
   # make a summary tibble for epa
-  pbp = pbp |>
+  pbp |>
     # combine datasets
     left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
     # filter for only passes and wrs team
     filter(!is.na(epa), play_type == "pass", posteam == team,
            !is.na(receiver_player_id),
            # exclude plays to the wr1
-           receiver_player_id != player_id) |>
+           receiver_player_id != player_id,
+           week %in% wr1_on_weeks(player_name)
+           ) |>
     group_by(player_on_field) |>
     # calculate epa per play
     summarise(
