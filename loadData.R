@@ -67,7 +67,7 @@ epa_on_off <- function(player_name, team) {
            # exclude plays to the wr1
            receiver_player_id != player_id,
            week %in% wr1_on_weeks(player_name)
-           ) |>
+    ) |>
     group_by(player_on_field) |>
     # calculate epa per play
     summarise(
@@ -126,7 +126,7 @@ stbrown_diff = calculate_diff(ST_BROWN)
 collins_diff = calculate_diff(COLLINS)
 pittman_diff = calculate_diff(PITTMAN)
 
-# make a tibble with the diifs
+# make a tibble with the diffs
 diff_tibble = tibble(
   player = c(
     "Zay Flowers", "Tetairoa McMillan", "Jerry Jeudy",
@@ -139,3 +139,149 @@ diff_tibble = tibble(
            stbrown_diff, collins_diff, pittman_diff, btj_diff, mcconkey_diff, nacua_diff, jefferson_diff,
            diggs_diff, olave_diff, brown_diff, metcalf_diff, jennings_diff, jsn_diff)) |>
   arrange(diff)
+
+
+#####################
+### P Value stuff ###
+#####################
+
+epa_on_off_pval <- function(player_name, team,player_diff) {
+  player_id <- rosters$gsis_id[rosters$full_name == player_name]
+  
+  participation_player <- participation |>
+    mutate(player_on_field = str_detect(offense_players, fixed(player_id)))
+  
+  pbp_pval = pbp |>
+    left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
+    filter(!is.na(epa), play_type == "pass", posteam == team,
+           !is.na(receiver_player_id),
+           receiver_player_id != player_id)
+  
+  trues = sum(pbp_pval$player_on_field)
+  
+  sim_diffs = numeric(500)
+  
+  for (i in 1:500) {
+    index = sample(pbp_pval$player_on_field, replace = FALSE, prob = NULL)
+    
+    pbp_sim = pbp_pval %>%
+      mutate(fake_true = index)
+    
+    pbp_sim = pbp_sim |>
+      left_join(participation_player, by = c("game_id" = "nflverse_game_id", "play_id")) |>
+      filter(!is.na(epa), play_type == "pass", posteam == team,
+             !is.na(receiver_player_id),
+             receiver_player_id != player_id) |>
+      group_by(fake_true) |>
+      summarise(
+        plays = n(),
+        epa_per_play = mean(epa),
+        .groups = "drop"
+      )
+    
+    sim_diffs[i] = pbp_sim$epa_per_play[pbp_sim$fake_true == TRUE] - 
+      pbp_sim$epa_per_play[pbp_sim$fake_true == FALSE]
+  }
+  
+  p_value = mean(abs(player_diff)>=abs(sim_diffs))
+  p_value
+}
+
+
+pittman_p = epa_on_off_pval("Michael Pittman", "IND",pittman_diff)
+flowers_p =  epa_on_off_pval("Zay Flowers", "BAL", flowers_diff)
+tet_p = epa_on_off_pval("Tetairoa McMillan", "CAR", tet_diff)
+shakir_p =  epa_on_off_pval("Khalil Shakir", "BUF", shakir_diff)
+djmoore_p=  epa_on_off_pval("DJ Moore", "CHI", djmoore_diff)
+chase_p=  epa_on_off_pval("Ja'Marr Chase", "CIN", chase_diff)
+sutton_p =  epa_on_off_pval("Courtland Sutton", "DEN", sutton_diff)
+jeudy_p = epa_on_off_pval("Jerry Jeudy", "CLE", jeudy_diff)
+stbrown_p =  epa_on_off_pval("Amon-Ra St. Brown", "DET", stbrown_diff)
+collins_p =  epa_on_off_pval("Nico Collins", "HOU", collins_diff)
+
+btj_p = epa_on_off_pval("Brian Thomas Jr.", "JAX", btj_diff)
+mcconkey_p = epa_on_off_pval("Ladd McConkey", "LAC", mcconkey_diff)
+nacua_p = epa_on_off_pval("Puka Nacua", "LA", nacua_diff)
+jefferson_p = epa_on_off_pval("Justin Jefferson", "MIN", jefferson_diff)
+diggs_p = epa_on_off_pval("Stefon Diggs", "NE", diggs_diff)
+olave_p = epa_on_off_pval("Chris Olave", "NO", olave_diff)
+brown_p = epa_on_off_pval("A.J. Brown", "PHI", brown_diff)
+metcalf_p = epa_on_off_pval("DK Metcalf", "PIT", metcalf_diff)
+jennings_p = epa_on_off_pval("Jauan Jennings", "SF", jennings_diff)
+jsn_p = epa_on_off_pval("Jaxon Smith-Njigba", "SEA", jsn_diff)
+
+
+pittman_p
+flowers_p
+tet_p
+shakir_p
+djmoore_p
+chase_p
+sutton_p
+jeudy_p
+stbrown_p
+collins_p
+btj_p
+mcconkey_p
+nacua_p
+jefferson_p
+diggs_p
+olave_p
+brown_p
+metcalf_p
+jennings_p
+jsn_p
+
+
+pval_tbl <- tibble(
+  player = c(
+    "Michael Pittman",
+    "Zay Flowers",
+    "Tetairoa McMillan",
+    "Khalil Shakir",
+    "DJ Moore",
+    "Ja'Marr Chase",
+    "Courtland Sutton",
+    "Jerry Jeudy",
+    "Amon-Ra St. Brown",
+    "Nico Collins",
+    "Brian Thomas Jr.",
+    "Ladd McConkey",
+    "Puka Nacua",
+    "Justin Jefferson",
+    "Stefon Diggs",
+    "Chris Olave",
+    "A.J. Brown",
+    "DK Metcalf",
+    "Jauan Jennings",
+    "Jaxon Smith-Njigba"),
+  p_value = c(
+    pittman_p,
+    flowers_p,
+    tet_p,
+    shakir_p,
+    djmoore_p,
+    chase_p,
+    sutton_p,
+    jeudy_p,
+    stbrown_p,
+    collins_p,
+    btj_p,
+    mcconkey_p,
+    nacua_p,
+    jefferson_p,
+    diggs_p,
+    olave_p,
+    brown_p,
+    metcalf_p,
+    jennings_p,
+    jsn_p ))
+
+pval_tbl
+
+ggplot(data = pval_tbl, aes(x = player, y = p_value, group = 1)) +
+  geom_point(col = "magenta", size = 5) +
+  geom_line( col = "black", linewidth = 1) +
+  geom_hline(yintercept = 0.05, linetype = "dashed", col = "red") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
