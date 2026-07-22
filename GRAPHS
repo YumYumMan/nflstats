@@ -41,4 +41,41 @@ ggplot(data = pval_tbl, aes(x = player, y = p_value, group = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+ggplot(
+  diff_tibble |> left_join(pval_tbl, by = "player"),
+  aes(x = diff, y = p_value, label = player)
+) +
+  geom_point(size = 3) +
+  geom_text(vjust = -1, size = 4) +
+  geom_hline(yintercept = 0.05, linetype = "dashed", color = "red") +
+  labs(
+    x = "EPA Difference",
+    y = "P value",
+    title = "EPA Difference vs P-value"
+  ) +
+  theme_minimal()
+
+#######
+
+plot_data <-
+  diff_tibble |>
+  left_join(pval_tbl, by = "player") |>
+  pivot_longer(
+    cols = c(diff, p_value),
+    names_to = "metric",
+    values_to = "value"
+  )
+
+ggplot(plot_data,
+       aes(x = reorder(player, -value), y = value)) +
+  geom_col(aes(fill = value)) +
+  facet_wrap(~metric, scales = "free_y") +
+  scale_fill_gradient2(
+    low = "red",
+    mid = "grey",
+    high = "darkblue",
+    midpoint = 0
+  ) +
+  coord_flip() +
+  theme_minimal()
 
