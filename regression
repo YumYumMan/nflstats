@@ -1,0 +1,50 @@
+
+library(tidyverse)
+
+regression_data = read_csv("Data/Regression Data.csv")
+
+regression_data
+lll = select(regression_data, PLAYER)
+print(lll, n = 110)
+
+player_stats <- load_player_stats(
+  seasons = 2025,
+  summary_level = "reg"
+)
+
+player_stats
+glimpse(player_stats)
+
+ypc_2025= read_csv("Data/nfl_ypc.csv")
+
+ypc_2025 = ypc_2025 |>
+  mutate(ypc_wr1 = `custom split`) |>
+  select(-`custom split`)
+
+ggplot(data = ypc_2025) +
+  geom_point(aes(x = Player, y = ypc_wr1), size = 3) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+lm_wr1 <- lm(ypc_wr1 ~ diff, data = diff_tibble |> left_join(ypc_2025, by = c("player" = "Player")))
+
+ggplot(data =  diff_tibble |> left_join(ypc_2025, by = c("player" = "Player")),
+       aes(x = diff, y = ypc_wr1)) +
+  geom_point() +
+  geom_abline(
+    intercept = coef(lm_wr1)[1],
+    slope = coef(lm_wr1)[2],
+    color = "blue"
+  )
+
+
+ggplot(data = diff_tibble) +
+  geom_point(aes(x = player, y = diff, fill = diff)) +
+  scale_fill_gradient2(low = "red", mid = "grey", high = "darkblue", midpoint = 0) +
+  labs(
+    title = "EPA Differential (On vs Off Field)",
+    x = "Player",
+    y = "EPA Difference",
+    fill = "EPA Diff") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
